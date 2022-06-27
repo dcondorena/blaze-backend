@@ -1,5 +1,5 @@
 ## To get product list
-GET http://localhost:6000/api/v1/products
+GET http://localhost:6000/api/v1/products?page=0&size=100
 Accept: application/json
 ###
 
@@ -9,27 +9,27 @@ POST http://localhost:6000/api/v1/products
 Content-Type: application/json
 
 {
-  "name": "Chocolate Cake",
+  "name": "PPP",
   "category": "Cakes",
   "unitPrice": 25,
   "active": true
 }
 ###
 
-## To insert product
-PUT http://localhost:6000/api/v1/products/62b692c6a311f10e7f3f35da
+## To update product
+PUT http://localhost:6000/api/v1/products/62ba1f03082e8b7c92a89a25
 Content-Type: application/json
 
 {
-  "name": "Chocolate Cake",
+  "name": "TTT",
   "category": "Cakessss",
-  "unitPrice": 25,
+  "unitPrice": 2000,
   "active": true
 }
 ###
 
 ## To delete product
-PUT http://localhost:6000/api/v1/products/62b692c6a311f10e7f3f35da
+DELETE http://localhost:6000/api/v1/products/62b88dcc10bcac62b677a353
 Content-Type: application/json
 
 ###

@@ -2,24 +2,33 @@ package com.test.blazebackend.model.request;
 
 import java.math.BigDecimal;
 
-public class ProductRequestDto {
+public class ProductOrderRequestDto {
 
+    private String productId;
     private String name;
     private String category;
     private BigDecimal unitPrice;
     private Boolean active;
 
-    public ProductRequestDto() {
+    public ProductOrderRequestDto() {
 
     }
 
-    public ProductRequestDto(String name, String category, BigDecimal unitPrice, Boolean active) {
+    public ProductOrderRequestDto(String productId, String name, String category, BigDecimal unitPrice, Boolean active) {
+        this.productId = productId;
         this.name = name;
         this.category = category;
         this.unitPrice = unitPrice;
         this.active = active;
     }
 
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getName() {
         return name;
@@ -53,10 +62,12 @@ public class ProductRequestDto {
         this.active = active;
     }
 
+
     @Override
     public String toString() {
         return "ProductRequestDto{" +
-                "name='" + name + '\'' +
+                "productId='" + productId + '\'' +
+                ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", active=" + active +

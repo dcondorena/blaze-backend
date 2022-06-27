@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 ## To update order
-PUT http://localhost:6000/api/v1/orders/62b94500d1ef3517052fcd51
+PUT http://localhost:6000/api/v1/orders/62ba2376082e8b7c92a89a26
 Content-Type: application/json
 
 {
@@ -47,7 +47,7 @@ Content-Type: application/json
       "productId": "62b692c6a311f10e7f3f35da",
       "name": "Chocolate Cake",
       "category": "Cakessss",
-      "unitPrice": 20,
+      "unitPrice": 60,
       "active": true
     },
     {
@@ -65,7 +65,7 @@ Content-Type: application/json
 
 
 ## To delete order
-PUT http://localhost:6000/api/v1/orders/62b8f7c0d7b7e8204b72bb60
+DELETE http://localhost:6000/api/v1/orders/62ba2376082e8b7c92a89a26
 Content-Type: application/json
 
 ###

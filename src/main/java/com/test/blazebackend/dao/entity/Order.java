@@ -1,7 +1,6 @@
 package com.test.blazebackend.dao.entity;
 
-import com.test.blazebackend.model.request.ProductRequestDto;
-import com.test.blazebackend.model.response.ProductResponseDto;
+import com.test.blazebackend.model.request.ProductOrderRequestDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,12 +24,12 @@ public class Order {
     private BigDecimal federalTaxAmount;
     private BigDecimal totalTaxesAmount;
     private BigDecimal totalAmount;
-    private List<ProductRequestDto> items;
+    private List<ProductOrderRequestDto> items;
 
     public Order() {
     }
 
-    public Order(Integer orderNumber, String status, Date registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductRequestDto> items) {
+    public Order(Integer orderNumber, String status, Date registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductOrderRequestDto> items) {
         this.orderNumber = orderNumber;
         this.status = status;
         this.registerDate = registerDate;
@@ -141,11 +140,11 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public List<ProductRequestDto> getItems() {
+    public List<ProductOrderRequestDto> getItems() {
         return items;
     }
 
-    public void setItems(List<ProductRequestDto> items) {
+    public void setItems(List<ProductOrderRequestDto> items) {
         this.items = items;
     }
 

@@ -4,13 +4,13 @@ import java.util.List;
 public class OrderRequestDto {
 
     private String customer;
-    private List<ProductRequestDto> items;
+    private List<ProductOrderRequestDto> items;
 
     public OrderRequestDto(){
 
     }
 
-    public OrderRequestDto(String customer, List<ProductRequestDto> items) {
+    public OrderRequestDto(String customer, List<ProductOrderRequestDto> items) {
         this.customer = customer;
         this.items = items;
     }
@@ -23,11 +23,11 @@ public class OrderRequestDto {
         this.customer = customer;
     }
 
-    public List<ProductRequestDto> getItems() {
+    public List<ProductOrderRequestDto> getItems() {
         return items;
     }
 
-    public void setItems(List<ProductRequestDto> items) {
+    public void setItems(List<ProductOrderRequestDto> items) {
         this.items = items;
     }
 }

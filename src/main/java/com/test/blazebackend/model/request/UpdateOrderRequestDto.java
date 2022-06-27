@@ -5,13 +5,13 @@ import java.util.List;
 public class UpdateOrderRequestDto {
 
     private String status;
-    private List<ProductRequestDto> items;
+    private List<ProductOrderRequestDto> items;
 
     public UpdateOrderRequestDto() {
 
     }
 
-    public UpdateOrderRequestDto(String status, List<ProductRequestDto> items) {
+    public UpdateOrderRequestDto(String status, List<ProductOrderRequestDto> items) {
         this.status = status;
         this.items = items;
     }
@@ -24,11 +24,11 @@ public class UpdateOrderRequestDto {
         this.status = status;
     }
 
-    public List<ProductRequestDto> getItems() {
+    public List<ProductOrderRequestDto> getItems() {
         return items;
     }
 
-    public void setItems(List<ProductRequestDto> items) {
+    public void setItems(List<ProductOrderRequestDto> items) {
         this.items = items;
     }
 

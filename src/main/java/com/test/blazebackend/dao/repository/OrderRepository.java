@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface OrderRepository extends MongoRepository<Order, String> {
-    Page<Order> findByOrderNumberContainingIgnoreCase(String orderNumber, Pageable pageable);
+    Page<Order> findByOrderNumberContainingIgnoreCase(Integer orderNumber, Pageable pageable);
 }
