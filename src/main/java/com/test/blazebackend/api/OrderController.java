@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -77,13 +79,13 @@ public class OrderController {
                         order.getStatus(),
                         df.format(order.getRegisterDate()),
                         order.getCustomer(),
-                        order.getSubtotal(),
-                        order.getCityTaxAmount(),
-                        order.getCountyTaxAmount(),
-                        order.getStateTaxAmount(),
-                        order.getFederalTaxAmount(),
-                        order.getTotalTaxesAmount(),
-                        order.getTotalAmount(),
+                        order.getSubtotal().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getCityTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getCountyTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getStateTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getFederalTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getTotalTaxesAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                        order.getTotalAmount().setScale(2,  RoundingMode.HALF_EVEN),
                         productResponseDtoList
                 );
             });
@@ -137,13 +139,13 @@ public class OrderController {
                     orderData.get().getStatus(),
                     df.format(orderData.get().getRegisterDate()),
                     orderData.get().getCustomer(),
-                    orderData.get().getSubtotal(),
-                    orderData.get().getCityTaxAmount(),
-                    orderData.get().getCountyTaxAmount(),
-                    orderData.get().getStateTaxAmount(),
-                    orderData.get().getFederalTaxAmount(),
-                    orderData.get().getTotalTaxesAmount(),
-                    orderData.get().getTotalAmount(),
+                    orderData.get().getSubtotal().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getCityTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getCountyTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getStateTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getFederalTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getTotalTaxesAmount().setScale(2,  RoundingMode.HALF_EVEN),
+                    orderData.get().getTotalAmount().setScale(2,  RoundingMode.HALF_EVEN),
                     productResponseDtoList
             );
             return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
@@ -196,13 +198,13 @@ public class OrderController {
                     "Pending",
                     new Date(),
                     orderRequestDto.getCustomer(),
-                    subtotal,
-                    cityTaxAmount,
-                    countyTaxAmount,
-                    stateTaxAmount,
-                    federalTaxAmount,
-                    totalTaxesAmount,
-                    totalAmount,
+                    subtotal.setScale(2,  RoundingMode.HALF_EVEN),
+                    cityTaxAmount.setScale(2,  RoundingMode.HALF_EVEN),
+                    countyTaxAmount.setScale(2,  RoundingMode.HALF_EVEN),
+                    stateTaxAmount.setScale(2,  RoundingMode.HALF_EVEN),
+                    federalTaxAmount.setScale(2,  RoundingMode.HALF_EVEN),
+                    totalTaxesAmount.setScale(2,  RoundingMode.HALF_EVEN),
+                    totalAmount.setScale(2,  RoundingMode.HALF_EVEN),
                     orderRequestDto.getItems()
             );
             Order _order = orderRepository.save(order);
@@ -245,13 +247,13 @@ public class OrderController {
             /*
              * Set Data
              * */
-            _order.setSubtotal(subtotal);
-            _order.setCityTaxAmount(cityTaxAmount);
-            _order.setCountyTaxAmount(countyTaxAmount);
-            _order.setStateTaxAmount(stateTaxAmount);
-            _order.setFederalTaxAmount(federalTaxAmount);
-            _order.setTotalTaxesAmount(totalTaxesAmount);
-            _order.setTotalAmount(totalAmount);
+            _order.setSubtotal(subtotal.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setCityTaxAmount(cityTaxAmount.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setCountyTaxAmount(countyTaxAmount.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setStateTaxAmount(stateTaxAmount.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setFederalTaxAmount(federalTaxAmount.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setTotalTaxesAmount(totalTaxesAmount.setScale(2,  RoundingMode.HALF_EVEN));
+            _order.setTotalAmount(totalAmount.setScale(2,  RoundingMode.HALF_EVEN));
             return new ResponseEntity<>(orderRepository.save(_order), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

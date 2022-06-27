@@ -1,5 +1,5 @@
 ## To get product list
-GET http://localhost:6000/api/v1/orders
+GET http://localhost:6000/api/v1/orders?page=0&size=30
 Accept: application/json
 
 ###
@@ -15,7 +15,7 @@ POST http://localhost:6000/api/v1/orders
 Content-Type: application/json
 
 {
-  "customer": "Alejandro Condorena",
+  "customer": "Rolando Condorena",
   "items": [
     {
       "productId": "62b692c6a311f10e7f3f35da",
@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 ## To update order
-PUT http://localhost:6000/api/v1/orders/62b8f69ebd315228dc1cd5ff
+PUT http://localhost:6000/api/v1/orders/62b94500d1ef3517052fcd51
 Content-Type: application/json
 
 {
