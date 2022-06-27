@@ -13,7 +13,7 @@ public class OrderResponseDto {
     private String orderId;
     private Integer orderNumber;
     private String status;
-    private Date registerDate;
+    private String registerDate;
     private String customer;
     private BigDecimal subtotal;
     private BigDecimal cityTaxAmount;
@@ -27,7 +27,7 @@ public class OrderResponseDto {
     public OrderResponseDto() {
     }
 
-    public OrderResponseDto(String orderId, Integer orderNumber, String status, Date registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductResponseDto> items) {
+    public OrderResponseDto(String orderId, Integer orderNumber, String status, String registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductResponseDto> items) {
         this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.status = status;
@@ -42,7 +42,6 @@ public class OrderResponseDto {
         this.totalAmount = totalAmount;
         this.items = items;
     }
-
 
     public String getOrderId() {
         return orderId;
@@ -68,11 +67,11 @@ public class OrderResponseDto {
         this.status = status;
     }
 
-    public Date getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
     }
 
@@ -155,7 +154,7 @@ public class OrderResponseDto {
                 "orderId='" + orderId + '\'' +
                 ", orderNumber=" + orderNumber +
                 ", status='" + status + '\'' +
-                ", registerDate=" + registerDate +
+                ", registerDate='" + registerDate + '\'' +
                 ", customer='" + customer + '\'' +
                 ", subtotal=" + subtotal +
                 ", cityTaxAmount=" + cityTaxAmount +

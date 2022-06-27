@@ -5,6 +5,7 @@ import com.test.blazebackend.dao.entity.Product;
 import com.test.blazebackend.dao.repository.OrderRepository;
 import com.test.blazebackend.model.request.OrderRequestDto;
 import com.test.blazebackend.model.request.ProductRequestDto;
+import com.test.blazebackend.model.request.UpdateOrderRequestDto;
 import com.test.blazebackend.model.response.OrderResponseDto;
 import com.test.blazebackend.model.response.ProductResponseDto;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,6 +54,12 @@ public class OrderController {
 
             Stream<OrderResponseDto> orderResponseDtoStream = orderPage.getContent().stream().map(order -> {
                 /*
+                 * Convert Date
+                 */
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                df.setTimeZone(TimeZone.getTimeZone("America/La_Paz"));
+                df.format(order.getRegisterDate());
+                /*
                  * Map Products
                  * */
                 Stream<ProductResponseDto> productResponseDtoStream = order.getItems().stream().map(item -> {
@@ -66,7 +75,7 @@ public class OrderController {
                         order.getOrderId(),
                         order.getOrderNumber(),
                         order.getStatus(),
-                        order.getRegisterDate(),
+                        df.format(order.getRegisterDate()),
                         order.getCustomer(),
                         order.getSubtotal(),
                         order.getCityTaxAmount(),
@@ -97,6 +106,52 @@ public class OrderController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<OrderResponseDto> getOrderDetail(
+            @PathVariable("id") String id) {
+        LOGGER.info("REQUEST: Init Request");
+        Optional<Order> orderData = orderRepository.findById(id);
+
+        if (orderData.isPresent()) {
+
+            /*
+             * Convert Date
+             */
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            df.setTimeZone(TimeZone.getTimeZone("America/La_Paz"));
+
+            /*
+             * Map Products
+             * */
+            Stream<ProductResponseDto> productResponseDtoStream = orderData.get().getItems().stream().map(item -> {
+                return new ProductResponseDto(
+                        item.getProductId(), item.getName(), item.getCategory(), item.getUnitPrice(), item.getActive()
+                );
+            });
+            List<ProductResponseDto> productResponseDtoList = productResponseDtoStream.collect(Collectors.toList());
+
+            OrderResponseDto orderResponseDto = new OrderResponseDto(
+                    orderData.get().getOrderId(),
+                    orderData.get().getOrderNumber(),
+                    orderData.get().getStatus(),
+                    df.format(orderData.get().getRegisterDate()),
+                    orderData.get().getCustomer(),
+                    orderData.get().getSubtotal(),
+                    orderData.get().getCityTaxAmount(),
+                    orderData.get().getCountyTaxAmount(),
+                    orderData.get().getStateTaxAmount(),
+                    orderData.get().getFederalTaxAmount(),
+                    orderData.get().getTotalTaxesAmount(),
+                    orderData.get().getTotalAmount(),
+                    productResponseDtoList
+            );
+            return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping("/orders")
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
@@ -158,32 +213,60 @@ public class OrderController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//
-//    @PutMapping("/products/{id}")
-//    public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
-//        Optional<Product> tutorialData = productRepository.findById(id);
-//
-//        if (tutorialData.isPresent()) {
-//            Product _product = tutorialData.get();
-//            _product.setName(product.getName());
-//            _product.setCategory(product.getCategory());
-//            _product.setCategory(product.getCategory());
-//            _product.setActive(product.getActive());
-//            return new ResponseEntity<>(productRepository.save(_product), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+
+    @PutMapping("/orders/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") String id, @RequestBody UpdateOrderRequestDto updateOrderRequestDto) {
+        Optional<Order> orderData = orderRepository.findById(id);
+
+        if (orderData.isPresent()) {
+            Order _order = orderData.get();
+            _order.setStatus(updateOrderRequestDto.getStatus());
+            _order.setItems(updateOrderRequestDto.getItems());
+            /*
+             * Calculate Amounts
+             * */
+            BigDecimal subtotal = BigDecimal.ZERO;
+            for (ProductRequestDto product : updateOrderRequestDto.getItems()) {
+                subtotal = subtotal.add(product.getUnitPrice());
+            }
+
+            BigDecimal cityTaxAmount = subtotal.multiply(BigDecimal.valueOf(0.10));
+            BigDecimal countyTaxAmount = (subtotal.add(cityTaxAmount)).multiply(BigDecimal.valueOf(0.05));
+            BigDecimal stateTaxAmount = (subtotal.add(cityTaxAmount).add(countyTaxAmount)).multiply(BigDecimal.valueOf(0.08));
+            BigDecimal federalTaxAmount = (subtotal.add(cityTaxAmount).add(countyTaxAmount).add(stateTaxAmount)).multiply(BigDecimal.valueOf(0.02));
+
+            BigDecimal totalTaxesAmount = cityTaxAmount
+                    .add(countyTaxAmount)
+                    .add(stateTaxAmount)
+                    .add(federalTaxAmount);
+
+            BigDecimal totalAmount = subtotal.add(totalTaxesAmount);
+
+            /*
+             * Set Data
+             * */
+            _order.setSubtotal(subtotal);
+            _order.setCityTaxAmount(cityTaxAmount);
+            _order.setCountyTaxAmount(countyTaxAmount);
+            _order.setStateTaxAmount(stateTaxAmount);
+            _order.setFederalTaxAmount(federalTaxAmount);
+            _order.setTotalTaxesAmount(totalTaxesAmount);
+            _order.setTotalAmount(totalAmount);
+            return new ResponseEntity<>(orderRepository.save(_order), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
-//    @DeleteMapping("/products/{id}")
-//    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") String id) {
-//        try {
-//            productRepository.deleteById(id);
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<HttpStatus> deleteOrder(@PathVariable("id") String id) {
+        try {
+            orderRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

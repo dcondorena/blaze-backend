@@ -28,5 +28,10 @@ Content-Type: application/json
 }
 ###
 
+## To delete product
+PUT http://localhost:6000/api/v1/products/62b692c6a311f10e7f3f35da
+Content-Type: application/json
+
+###
 
 

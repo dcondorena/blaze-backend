@@ -1,0 +1,48 @@
+## To get order list
+GET https://morning-thicket-18297.herokuapp.com/api/v1/orders
+Accept: application/json
+
+###
+
+
+## To insert order
+POST https://morning-thicket-18297.herokuapp.com/api/v1/orders
+Content-Type: application/json
+
+{
+  "customer": "Alejandro Condorena",
+  "items": [
+    {
+      "productId": "62b692c6a311f10e7f3f35da",
+      "name": "Chocolate Cake",
+      "category": "Cakessss",
+      "unitPrice": 60,
+      "active": true
+    },
+    {
+      "productId": "62b692c6a3dede0e7f3f35da",
+      "name": "Chocolate",
+      "category": "Sweet",
+      "unitPrice": 40,
+      "active": true
+    }
+  ]
+}
+
+###
+
+## To insert product
+PUT http://localhost:6000/api/v1/products/62b692c6a311f10e7f3f35da
+Content-Type: application/json
+
+{
+  "name": "Chocolate Cake",
+  "category": "Cakessss",
+  "unitPrice": 25,
+  "active": true
+}
+
+###
+
+
+

@@ -4,8 +4,13 @@ Accept: application/json
 
 ###
 
+## To get order detail
+GET http://localhost:6000/api/v1/orders/62b8f7c0d7b7e8204b72bb60
+Accept: application/json
 
-## To insert product
+###
+
+## To insert order
 POST http://localhost:6000/api/v1/orders
 Content-Type: application/json
 
@@ -31,16 +36,37 @@ Content-Type: application/json
 
 ###
 
-## To insert product
-PUT http://localhost:6000/api/v1/products/62b692c6a311f10e7f3f35da
+## To update order
+PUT http://localhost:6000/api/v1/orders/62b8f69ebd315228dc1cd5ff
 Content-Type: application/json
 
 {
-  "name": "Chocolate Cake",
-  "category": "Cakessss",
-  "unitPrice": 25,
-  "active": true
+  "status": "Rejected",
+  "items": [
+    {
+      "productId": "62b692c6a311f10e7f3f35da",
+      "name": "Chocolate Cake",
+      "category": "Cakessss",
+      "unitPrice": 20,
+      "active": true
+    },
+    {
+      "productId": "62b692c6a3dede0e7f3f35da",
+      "name": "Chocolate",
+      "category": "Sweet",
+      "unitPrice": 40,
+      "active": true
+    }
+  ]
 }
+
+###
+
+
+
+## To delete order
+PUT http://localhost:6000/api/v1/orders/62b8f7c0d7b7e8204b72bb60
+Content-Type: application/json
 
 ###
 
