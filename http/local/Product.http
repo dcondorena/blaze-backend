@@ -1,5 +1,5 @@
 ## To get product list
-GET http://localhost:6000/api/v1/products?name=Cake
+GET http://localhost:6000/api/v1/products
 Accept: application/json
 ###
 

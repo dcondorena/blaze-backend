@@ -1,13 +1,14 @@
 package com.test.blazebackend.api;
 
-import com.test.blazebackend.model.Product;
-import com.test.blazebackend.repository.ProductRepository;
+import com.test.blazebackend.dao.entity.Product;
+import com.test.blazebackend.dao.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class ProductController {
         LOGGER.info("REQUEST: Init Request");
         try {
             List<Product> products = new ArrayList<Product>();
-            Pageable paging = PageRequest.of(page, size);
+            Pageable paging = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "unitPrice"));
 
             Page<Product> productPage;
             if (name == null) {
@@ -71,10 +72,10 @@ public class ProductController {
 
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
-        Optional<Product> tutorialData = productRepository.findById(id);
+        Optional<Product> productData = productRepository.findById(id);
 
-        if (tutorialData.isPresent()) {
-            Product _product = tutorialData.get();
+        if (productData.isPresent()) {
+            Product _product = productData.get();
             _product.setName(product.getName());
             _product.setCategory(product.getCategory());
             _product.setCategory(product.getCategory());

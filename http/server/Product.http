@@ -1,0 +1,32 @@
+## To get product list
+GET  https://morning-thicket-18297.herokuapp.com/api/v1/products?size=10&page=0
+Accept: application/json
+###
+
+
+## To insert product
+POST https://morning-thicket-18297.herokuapp.com/api/v1/products
+Content-Type: application/json
+
+{
+  "name": "Chocolate Cake",
+  "category": "Cakes",
+  "unitPrice": 25,
+  "active": true
+}
+###
+
+## To update product
+PUT https://morning-thicket-18297.herokuapp.com/api/v1/products/62b692c6a311f10e7f3f35da
+Content-Type: application/json
+
+{
+  "name": "Chocolate Cake",
+  "category": "Cakessss",
+  "unitPrice": 25,
+  "active": true
+}
+###
+
+
+
