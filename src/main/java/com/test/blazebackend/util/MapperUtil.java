@@ -3,6 +3,7 @@ package com.test.blazebackend.util;
 import com.test.blazebackend.dao.entity.Order;
 import com.test.blazebackend.dao.entity.Product;
 import com.test.blazebackend.model.response.OrderResponseDto;
+import com.test.blazebackend.model.response.ProductOrderResponseDto;
 import com.test.blazebackend.model.response.ProductResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,12 +63,13 @@ public class MapperUtil {
             /*
              * Map Products
              * */
-            Stream<ProductResponseDto> productResponseDtoStream = order.getItems().stream().map(item -> {
-                return new ProductResponseDto(
-                        item.getProductId(), item.getName(), item.getCategory(), item.getUnitPrice(), item.getActive()
+            Stream<ProductOrderResponseDto> productResponseDtoStream = order.getItems().stream().map(item -> {
+                return new ProductOrderResponseDto(
+                        item.getProductId(), item.getName(), item.getCategory(), item.getUnitPrice(), item.getQuantity(),
+                        item.getCost(), item.getActive()
                 );
             });
-            List<ProductResponseDto> productResponseDtoList = productResponseDtoStream.collect(Collectors.toList());
+            List<ProductOrderResponseDto> productOrderResponseDtoList = productResponseDtoStream.collect(Collectors.toList());
             /*
              * Map Orders
              * */
@@ -77,14 +79,14 @@ public class MapperUtil {
                     order.getStatus(),
                     df.format(order.getRegisterDate()),
                     order.getCustomer(),
-                    order.getSubtotal().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getCityTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getCountyTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getStateTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getFederalTaxAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getTotalTaxesAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    order.getTotalAmount().setScale(2,  RoundingMode.HALF_EVEN),
-                    productResponseDtoList
+                    order.getSubtotal().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getCityTaxAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getCountyTaxAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getStateTaxAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getFederalTaxAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getTotalTaxesAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    order.getTotalAmount().setScale(2, RoundingMode.HALF_EVEN),
+                    productOrderResponseDtoList
             );
         });
         LOGGER.info("MAPPER-UTIL: Mapping of OrderResponseDto successfull");

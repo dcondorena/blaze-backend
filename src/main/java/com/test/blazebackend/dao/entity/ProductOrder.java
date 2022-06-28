@@ -1,27 +1,28 @@
-package com.test.blazebackend.model.request;
+package com.test.blazebackend.dao.entity;
 
 import java.math.BigDecimal;
 
-public class ProductOrderRequestDto {
+public class ProductOrder {
 
     private String productId;
     private String name;
     private String category;
     private BigDecimal unitPrice;
     private Integer quantity;
+    private BigDecimal cost;
     private Boolean active;
 
-    public ProductOrderRequestDto() {
+    public ProductOrder() {
 
     }
 
-    public ProductOrderRequestDto(String productId, String name, String category, BigDecimal unitPrice, Integer quantity, Boolean active) {
-
+    public ProductOrder(String productId, String name, String category, BigDecimal unitPrice, Integer quantity, BigDecimal cost, Boolean active) {
         this.productId = productId;
         this.name = name;
         this.category = category;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
+        this.cost = cost;
         this.active = active;
     }
 
@@ -65,6 +66,14 @@ public class ProductOrderRequestDto {
         this.quantity = quantity;
     }
 
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -73,14 +82,16 @@ public class ProductOrderRequestDto {
         this.active = active;
     }
 
+
     @Override
     public String toString() {
-        return "ProductOrderRequestDto{" +
+        return "ProductOrder{" +
                 "productId='" + productId + '\'' +
                 ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", quantity=" + quantity +
+                ", cost=" + cost +
                 ", active=" + active +
                 '}';
     }

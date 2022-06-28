@@ -1,12 +1,14 @@
 package com.test.blazebackend.bl;
 
 import com.test.blazebackend.dao.entity.Order;
+import com.test.blazebackend.dao.entity.ProductOrder;
 import com.test.blazebackend.dao.repository.OrderRepository;
 import com.test.blazebackend.exception.ServiceException;
 import com.test.blazebackend.model.request.OrderRequestDto;
 import com.test.blazebackend.model.request.ProductOrderRequestDto;
 import com.test.blazebackend.model.request.UpdateOrderRequestDto;
 import com.test.blazebackend.model.response.OrderResponseDto;
+import com.test.blazebackend.model.response.ProductOrderResponseDto;
 import com.test.blazebackend.model.response.ProductResponseDto;
 import com.test.blazebackend.util.MapperUtil;
 import org.slf4j.Logger;
@@ -96,12 +98,13 @@ public class OrderBl {
             /*
              * Map Products
              * */
-            Stream<ProductResponseDto> productResponseDtoStream = orderData.get().getItems().stream().map(item -> {
-                return new ProductResponseDto(
-                        item.getProductId(), item.getName(), item.getCategory(), item.getUnitPrice(), item.getActive()
+            Stream<ProductOrderResponseDto> productOrderResponseDtoStream = orderData.get().getItems().stream().map(item -> {
+                return new ProductOrderResponseDto(
+                        item.getProductId(), item.getName(), item.getCategory(), item.getUnitPrice(), item.getQuantity(),
+                        item.getCost(), item.getActive()
                 );
             });
-            List<ProductResponseDto> productResponseDtoList = productResponseDtoStream.collect(Collectors.toList());
+            List<ProductOrderResponseDto> productOrderResponseDtoList = productOrderResponseDtoStream.collect(Collectors.toList());
 
             OrderResponseDto orderResponseDto = new OrderResponseDto(
                     orderData.get().getOrderId(),
@@ -116,7 +119,7 @@ public class OrderBl {
                     orderData.get().getFederalTaxAmount().setScale(2, RoundingMode.HALF_EVEN),
                     orderData.get().getTotalTaxesAmount().setScale(2, RoundingMode.HALF_EVEN),
                     orderData.get().getTotalAmount().setScale(2, RoundingMode.HALF_EVEN),
-                    productResponseDtoList
+                    productOrderResponseDtoList
             );
             LOGGER.info("ORDER-BL: Request to get order detail successfull");
             return orderResponseDto;
@@ -142,8 +145,16 @@ public class OrderBl {
              * */
             LOGGER.info("ORDER-BL: Starting calculating amounts");
             BigDecimal subtotal = BigDecimal.ZERO;
+
+            List<ProductOrder> productOrders = new ArrayList<>();
             for (ProductOrderRequestDto product : orderRequestDto.getItems()) {
-                subtotal = subtotal.add(product.getUnitPrice());
+                BigDecimal cost = product.getUnitPrice().multiply(BigDecimal.valueOf(product.getQuantity()));
+                subtotal = subtotal.add(cost);
+                productOrders.add(new ProductOrder(
+                        product.getProductId(), product.getName(), product.getCategory(), product.getUnitPrice(),
+                        product.getQuantity(), cost,
+                        product.getActive()
+                ));
             }
 
             BigDecimal cityTaxAmount = subtotal.multiply(BigDecimal.valueOf(0.10));
@@ -174,7 +185,7 @@ public class OrderBl {
                     federalTaxAmount.setScale(2, RoundingMode.HALF_EVEN),
                     totalTaxesAmount.setScale(2, RoundingMode.HALF_EVEN),
                     totalAmount.setScale(2, RoundingMode.HALF_EVEN),
-                    orderRequestDto.getItems()
+                    productOrders
             );
 
             LOGGER.info("QUERY-DB: Starting save order");
@@ -194,18 +205,27 @@ public class OrderBl {
         Optional<Order> orderData = orderRepository.findById(id);
         LOGGER.info("QUERY-DB-SUCCESS: Find order successfull");
 
-
         if (orderData.isPresent()) {
             Order _order = orderData.get();
             _order.setStatus(updateOrderRequestDto.getStatus());
-            _order.setItems(updateOrderRequestDto.getItems());
             /*
              * Calculate Amounts
              * */
             BigDecimal subtotal = BigDecimal.ZERO;
+            /*
+             * Map ProductOrder
+             */
+            List<ProductOrder> productOrders = new ArrayList<>();
             for (ProductOrderRequestDto product : updateOrderRequestDto.getItems()) {
-                subtotal = subtotal.add(product.getUnitPrice());
+                BigDecimal cost = product.getUnitPrice().multiply(BigDecimal.valueOf(product.getQuantity()));
+                subtotal = subtotal.add(cost);
+                productOrders.add(new ProductOrder(
+                        product.getProductId(), product.getName(), product.getCategory(), product.getUnitPrice(),
+                        product.getQuantity(), cost,
+                        product.getActive()
+                ));
             }
+            _order.setItems(productOrders);
 
             BigDecimal cityTaxAmount = subtotal.multiply(BigDecimal.valueOf(0.10));
             BigDecimal countyTaxAmount = (subtotal.add(cityTaxAmount)).multiply(BigDecimal.valueOf(0.05));

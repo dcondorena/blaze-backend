@@ -1,11 +1,11 @@
 ## To get product list
-GET http://localhost:6000/api/v1/products?page=0&size=100
+GET {{host}}/products?page=0&size=100
 Accept: application/json
 ###
 
 
 ## To insert product
-POST http://localhost:6000/api/v1/products
+POST {{host}}/products
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 ###
 
 ## To update product
-PUT http://localhost:6000/api/v1/products/62ba1f03082e8b7c92a89a25
+PUT {{host}}/products/62ba1f03082e8b7c92a89a25
 Content-Type: application/json
 
 {
@@ -29,7 +29,7 @@ Content-Type: application/json
 ###
 
 ## To delete product
-DELETE http://localhost:6000/api/v1/products/62b88dcc10bcac62b677a353
+DELETE {{host}}/products/62b88dcc10bcac62b677a353
 Content-Type: application/json
 
 ###

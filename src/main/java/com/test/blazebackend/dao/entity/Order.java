@@ -24,12 +24,12 @@ public class Order {
     private BigDecimal federalTaxAmount;
     private BigDecimal totalTaxesAmount;
     private BigDecimal totalAmount;
-    private List<ProductOrderRequestDto> items;
+    private List<ProductOrder> items;
 
     public Order() {
     }
 
-    public Order(Integer orderNumber, String status, Date registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductOrderRequestDto> items) {
+    public Order(Integer orderNumber, String status, Date registerDate, String customer, BigDecimal subtotal, BigDecimal cityTaxAmount, BigDecimal countyTaxAmount, BigDecimal stateTaxAmount, BigDecimal federalTaxAmount, BigDecimal totalTaxesAmount, BigDecimal totalAmount, List<ProductOrder> items) {
         this.orderNumber = orderNumber;
         this.status = status;
         this.registerDate = registerDate;
@@ -140,11 +140,11 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public List<ProductOrderRequestDto> getItems() {
+    public List<ProductOrder> getItems() {
         return items;
     }
 
-    public void setItems(List<ProductOrderRequestDto> items) {
+    public void setItems(List<ProductOrder> items) {
         this.items = items;
     }
 

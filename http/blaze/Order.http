@@ -1,17 +1,17 @@
 ## To get product list
-GET http://localhost:6000/api/v1/orders?page=0&size=30
+GET {{host}}/orders?page=0&size=30
 Accept: application/json
 
 ###
 
 ## To get order detail
-GET http://localhost:6000/api/v1/orders/62b8f7c0d7b7e8204b72bb60
+GET {{host}}/orders/62b8f7c0d7b7e8204b72bb60
 Accept: application/json
 
 ###
 
 ## To insert order
-POST http://localhost:6000/api/v1/orders
+POST {{host}}/orders
 Content-Type: application/json
 
 {
@@ -21,14 +21,16 @@ Content-Type: application/json
       "productId": "62b692c6a311f10e7f3f35da",
       "name": "Chocolate Cake",
       "category": "Cakessss",
-      "unitPrice": 60,
+      "unitPrice": 10,
+      "quantity": 6,
       "active": true
     },
     {
       "productId": "62b692c6a3dede0e7f3f35da",
       "name": "Chocolate",
       "category": "Sweet",
-      "unitPrice": 40,
+      "unitPrice": 5,
+      "quantity": 8,
       "active": true
     }
   ]
@@ -37,7 +39,7 @@ Content-Type: application/json
 ###
 
 ## To update order
-PUT http://localhost:6000/api/v1/orders/62ba2376082e8b7c92a89a26
+PUT {{host}}/orders/62ba5f13a6f7b3457e04c7bc
 Content-Type: application/json
 
 {
@@ -47,14 +49,16 @@ Content-Type: application/json
       "productId": "62b692c6a311f10e7f3f35da",
       "name": "Chocolate Cake",
       "category": "Cakessss",
-      "unitPrice": 60,
+      "unitPrice": 10,
+      "quantity": 5,
       "active": true
     },
     {
       "productId": "62b692c6a3dede0e7f3f35da",
       "name": "Chocolate",
       "category": "Sweet",
-      "unitPrice": 40,
+      "unitPrice": 5,
+      "quantity": 8,
       "active": true
     }
   ]
@@ -65,7 +69,7 @@ Content-Type: application/json
 
 
 ## To delete order
-DELETE http://localhost:6000/api/v1/orders/62ba2376082e8b7c92a89a26
+DELETE {{host}}/orders/62ba2376082e8b7c92a89a26
 Content-Type: application/json
 
 ###
